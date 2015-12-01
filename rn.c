@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<string.h>
 #define BUFFSIZE 4096
-
+const char dir[] = "./create/";
 int main()
 {
 	FILE *fp1 = NULL;
@@ -11,6 +11,7 @@ int main()
 	char name_o[100];
 	char name_d[100];
 	char buff[BUFFSIZE];
+	char path[200];
 	int count = 0, n;
 	
 	fp1 = fopen("origin", "r");
@@ -33,8 +34,9 @@ int main()
 		}
 		n = strlen(name_d);
 		name_d[n - 1] = '\0';
-
-		fp_d =fopen(name_d, "w");
+		strcpy(path, dir);
+		strcat(path, name_d);	
+		fp_d =fopen(path, "w");
 		if(fp_d == NULL){
 			printf("%s open err\n", name_d);
 			return 0;
