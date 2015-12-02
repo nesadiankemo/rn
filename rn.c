@@ -12,7 +12,8 @@ int main()
 	char name_d[100];
 	char buff[BUFFSIZE];
 	char path[200];
-	int count = 0, n;
+	int success = 0, n;
+	int fail = 0;
 	
 	fp1 = fopen("origin", "r");
 	if(fp1 == NULL){
@@ -29,8 +30,10 @@ int main()
 		name_o[n - 1] = '\0';
 		fp_o = fopen(name_o, "r");
 		if(fp_o == NULL){
-			printf("%s open err\n", name_o);
-			return 0;
+			printf("%s open err1\n", name_o);
+			fail ++;
+			continue;
+			//return 0;
 		}
 		n = strlen(name_d);
 		name_d[n - 1] = '\0';
@@ -38,17 +41,21 @@ int main()
 		strcat(path, name_d);	
 		fp_d =fopen(path, "w");
 		if(fp_d == NULL){
-			printf("%s open err\n", name_d);
+			printf("%s open err2\n", name_d);
 			return 0;
 		}
+		printf("rename file %s to %s.\n ", name_o, name_d);
 		while((n = fread(buff, 1, BUFFSIZE, fp_o)) != 0){
-			printf("w");
-			fwrite(buff, n, 1, fp_d);
+			//printf("n = %d\n", n);
+			if(fwrite(buff, 1, n, fp_d) != n){
+				printf("file %s write error\n", path);
+				return 0;
+			}
 		}
 		fclose(fp_o);
 		fclose(fp_d);
-		count ++;
+		success ++;
 	}	
-	printf("count = %d\n", count);
+	printf("success = %d, fail = %d\n", success, fail);
 	return 1;
 }
